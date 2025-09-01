@@ -40,4 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     show(nameEl, names[ni++ % names.length]);           // 3s cycle
   }, 3000);
+
+  setTimeout(() => {
+    const stage = document.querySelector('.stage');
+    let note = document.getElementById('note');
+    if (!note) {
+      note = document.createElement('div');
+      note.id = 'note';
+      note.className = 'note';
+      note.textContent = 'Click anywhere to continue';  
+      stage.appendChild(note);
+    }
+    // trigger fade-in
+    requestAnimationFrame(() => note.classList.add('show'));
+  }, 7000);
 });

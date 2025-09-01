@@ -103,3 +103,19 @@
     .animate { animation: none; opacity: 1; transform: none; }
   }
   
+
+  /* hing */
+  .note {
+    font-size: clamp(12px, 2.4vw, 16px);
+    color: var(--hint, #9aa0a6);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 300ms ease, transform 300ms ease;
+    margin-top: 8px;     /* space below the name */
+    text-align: center;
+  }
+  .note.show {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+  
