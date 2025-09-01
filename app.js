@@ -1,33 +1,43 @@
-// app.js
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('[app] loaded');
+  const helloEl = document.getElementById('hello');
+  const nameEl  = document.getElementById('name');
+  if (!helloEl || !nameEl) return;
 
-  const el = document.getElementById('hello');
-  if (!el) { console.error('[app] #hello not found'); return; }
+  // Per-element animation durations (CSS var is read by .animate)
+  helloEl.style.setProperty('--cycle-ms', '4s'); // 4s for greetings
+  nameEl.style.setProperty('--cycle-ms',  '3s'); // 3s for names
 
-  // Ensure CSS animation uses a real time
-  document.documentElement.style.setProperty('--cycle-ms', '4s');
-  console.log('[app] --cycle-ms =', getComputedStyle(document.documentElement).getPropertyValue('--cycle-ms').trim());
-
-  const words = (Array.isArray(window.HELLO_GREETINGS) && window.HELLO_GREETINGS.length)
+  // From greetings.data.js
+  const greetings = (Array.isArray(window.HELLO_GREETINGS) && window.HELLO_GREETINGS.length)
     ? window.HELLO_GREETINGS
-    : ['Hello','Hola','Bonjour'];
+    : ['Hello', 'Hola', 'Bonjour'];
 
-  let i = 0;
 
-  function show(txt){
+  // hard coded names
+  const names = [
+    "Saigeypoo", "Soyeon" , "소연", "Saige"
+  ];
+
+  let gi = 0, ni = 0;
+
+  function show(el, txt) {
     el.textContent = txt;
     el.dir = 'auto';
     el.classList.remove('animate');
-    void el.offsetWidth;     // restart CSS animation
+    void el.offsetWidth;        // restart CSS animation
     el.classList.add('animate');
-    console.log('[app] show →', txt);
   }
 
-  // start with "hey", then rotate every 3s
-  show('Hi');
+  // Kick off (use whatever is in HTML initially)
+  show(helloEl, helloEl.textContent || greetings[0]);
+  show(nameEl,  nameEl.textContent  || names[0]);
+
+  // Independent cadences
   setInterval(() => {
-    show(words[i % words.length]);
-    i++;
-}, 4000);
+    show(helloEl, greetings[gi++ % greetings.length]);  // 4s cycle
+  }, 4000);
+
+  setInterval(() => {
+    show(nameEl, names[ni++ % names.length]);           // 3s cycle
+  }, 3000);
 });
