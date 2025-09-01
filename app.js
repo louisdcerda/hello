@@ -1,83 +1,57 @@
-(() => {
-  // Run after DOM is ready (works even if you forget `defer`)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+document.addEventListener('DOMContentLoaded', () => {
+  const helloEl = document.getElementById('hello');
+  const nameEl  = document.getElementById('name');
+  if (!helloEl || !nameEl) return;
+
+  // Per-element animation durations (CSS var is read by .animate)
+  helloEl.style.setProperty('--cycle-ms', '4s'); // 4s for greetings
+  nameEl.style.setProperty('--cycle-ms',  '3s'); // 3s for names
+
+  // From greetings.data.js
+  const greetings = (Array.isArray(window.HELLO_GREETINGS) && window.HELLO_GREETINGS.length)
+    ? window.HELLO_GREETINGS
+    : ['Hello', 'Hola', 'Bonjour'];
+
+
+  // hard coded names
+  const names = [
+    "Saigeypoo", "Soyeon" , "소연", "Saige"
+  ];
+
+  let gi = 0, ni = 0;
+
+  function show(el, txt) {
+    el.textContent = txt;
+    el.dir = 'auto';
+    el.classList.remove('animate');
+    void el.offsetWidth;        // restart CSS animation
+    el.classList.add('animate');
   }
 
-  function init() {
-    const helloEl = document.getElementById('hello');
-    const hintEl  = document.getElementById('hint');
+  // Kick off (use whatever is in HTML initially)
+  show(helloEl, helloEl.textContent || greetings[0]);
+  show(nameEl,  nameEl.textContent  || names[0]);
 
-    if (!helloEl) {
-      console.error('[app] #hello not found in DOM');
-      return;
+  // Independent cadences
+  setInterval(() => {
+    show(helloEl, greetings[gi++ % greetings.length]);  // 4s cycle
+  }, 4000);
+
+  setInterval(() => {
+    show(nameEl, names[ni++ % names.length]);           // 3s cycle
+  }, 3000);
+
+  setTimeout(() => {
+    const stage = document.querySelector('.stage');
+    let note = document.getElementById('note');
+    if (!note) {
+      note = document.createElement('div');
+      note.id = 'note';
+      note.className = 'note';
+      note.textContent = 'Click anywhere to continue';  
+      stage.appendChild(note);
     }
-    if (!window.HelloCycler) {
-      console.error('[app] HelloCycler is missing. Load helloCycler.lib.js before app.js');
-      return;
-    }
-
-    // Single source of truth: 3s cycle
-    document.documentElement.style.setProperty('--cycle-ms', '3000');
-
-    const greetings = (Array.isArray(window.HELLO_GREETINGS) && window.HELLO_GREETINGS.length)
-      ? window.HELLO_GREETINGS
-      : ['Hello', 'Hola', 'Bonjour']; // safe fallback
-
-    const cycler = new window.HelloCycler(helloEl, {
-      intervalMs: 3000,
-      greetings
-    });
-
-    cycler.start();
-
-    // ---- Continue / Exit intro ----
-    let didContinue = false;
-    function continueAction() {
-      if (didContinue) return;
-      didContinue = true;
-
-      document.body.style.transition = 'opacity 500ms ease';
-      document.body.style.opacity = '0';
-
-      setTimeout(() => {
-        cycler.stop();
-        document.body.style.opacity = '1';
-        const main = document.querySelector('main');
-        if (main) {
-          main.innerHTML = `
-            <div style="text-align:center">
-              <p style="color:var(--hint);font-size:clamp(14px,3.5vw,18px)">Hey</p>
-              <h1 style="font-size:clamp(28px,6vw,56px);margin:0 0 12px">Saige</h1>
-            </div>
-          `;
-        }
-        if (hintEl && hintEl.parentNode) hintEl.parentNode.removeChild(hintEl);
-      }, 520);
-    }
-
-    // ---- Gesture & click handling ----
-    let startY = null;
-    window.addEventListener('touchstart', (e) => {
-      if (e.touches && e.touches.length) startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    window.addEventListener('touchend', (e) => {
-      if (startY !== null) {
-        const endY = (e.changedTouches && e.changedTouches[0].clientY) || startY;
-        if (startY - endY > 40) continueAction(); // swipe up
-        startY = null;
-      }
-    }, { passive: true });
-
-    window.addEventListener('click', continueAction);
-
-    // ---- Power savings: pause when hidden ----
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) cycler.stop();
-      else cycler.start();
-    });
-  }
-})();
+    // trigger fade-in
+    requestAnimationFrame(() => note.classList.add('show'));
+  }, 7000);
+});
