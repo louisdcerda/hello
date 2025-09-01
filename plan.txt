@@ -1,0 +1,1 @@
+make a phone that is scrollable and opens to photo app with picutres of us, video, and then opens a note app and note 
