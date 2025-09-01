@@ -54,6 +54,21 @@
     opacity: 0;                      /* animated state */
     transform: translateY(6px) scale(0.985);
   }
+
+    /* big headline with soft glow for name class */
+    .name {
+        font-weight: 500;
+        letter-spacing: .05em;
+        text-align: center;
+        line-height: 2;
+        font-size: clamp(40px, 10vw, 120px);
+        text-shadow:
+          0 2px 18px rgba(255,255,255,0.06),
+          0 0 24px rgba(255,255,255,0.08);
+        opacity: 0;                      /* animated state */
+        transform: translateY(6px) scale(0.985);
+      }
+      
   
   /* ensure first word is visible even before JS adds .animate */
   .hello:not(.animate) {
@@ -61,7 +76,12 @@
     transform: none;
   }
   
-  /* tie animation length to the 3s cycle */
+  .name:not(.animate) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* tie animation length to the 4s cycle */
   .animate { animation: fadeUp var(--cycle-ms) ease-in-out forwards; }
   
   @keyframes fadeUp {
