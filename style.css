@@ -1,0 +1,81 @@
+
+:root {
+  --bg: #000;           /* background */
+  --fg: #fff;           /* text color */
+  --hint: #9aa0a6;      /* subtle UI text */
+  --cycle-ms: 3000;     /* time per greeting (ms) — set to 3 seconds */
+  --fade-ms: 1400;      /* fade/scale duration (ms) */
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+               "Segoe UI Emoji", "Segoe UI Symbol";
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle animated gradient, reminiscent of iOS setup */
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(120vmax 120vmax at 10% 20%, #1b1b1b, transparent),
+              radial-gradient(120vmax 120vmax at 90% 80%, #121212, transparent),
+              radial-gradient(120vmax 120vmax at 20% 80%, #0f0f0f, transparent),
+              #000;
+  filter: saturate(1.2) brightness(1);
+  animation: drift 30s linear infinite; opacity: 0.85;
+}
+@keyframes drift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(1%, -1%, 0) scale(1.02); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+
+.stage {
+  position: relative; z-index: 1;
+  height: 100dvh; width: 100vw;
+  display: grid; place-items: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* The big rotating greeting */
+.hello {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1;
+  /* Fluid type that stays readable on phones and big screens */
+  font-size: clamp(40px, 10vw, 120px);
+  text-shadow: 0 2px 18px rgba(255,255,255,0.06);
+  opacity: 0; transform: translateY(6px) scale(0.985);
+}
+
+.animate { animation: fadeUp var(--cycle-ms) ease-in-out forwards; }
+
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.98); }
+  15%  { opacity: 1; transform: translateY(0)    scale(1);    } /* fade in */
+  90%  { opacity: 1; transform: translateY(0)    scale(1);    } /* hold visible */
+  100% { opacity: 0; transform: translateY(-8px) scale(1.01); } /* fade out at end */
+}
+
+/* Swipe / tap hint */
+.hint {
+  position: fixed; left: 0; right: 0; bottom: max(20px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: var(--hint); font-size: clamp(12px, 2.8vw, 16px);
+  letter-spacing: 0.02em; opacity: 0.9; user-select: none;
+}
+.chevron { width: 10px; height: 10px; border-right: 2px solid var(--hint); border-top: 2px solid var(--hint); transform: rotate(45deg); }
+
+/* Reduce motion respects user preference */
+@media (prefers-reduced-motion: reduce) {
+  .bg-gradient { animation: none; }
+  .animate { animation: none; opacity: 1; transform: none; }
+}

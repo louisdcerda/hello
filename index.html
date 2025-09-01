@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>iPhone‑style Hello Intro</title>
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <main class="stage" role="application" aria-label="Hello screen">
+    <div id="hello" class="hello" aria-live="polite">Hello</div>
+  </main>
+
+  <div class="hint" id="hint">
+    <span class="chevron" style="transform: rotate(135deg);"></span>
+    <span>Swipe up or tap to continue</span>
+  </div>
+
+<script src="./greetings.data.js" defer></script>
+<script src="./helloCycler.lib.js" defer></script>
+<script src="./app.js" defer></script>
+
+</body>
+</html>
