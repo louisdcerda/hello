@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // hard coded names
   const names = [
-    "Saigeypoo", "Soyeon" , "소연", "Saige"
+    "Saigeypoo", "Soyeon" , "소연", "Penguin Luvr 123","Saige"
   ];
 
   let gi = 0, ni = 0;

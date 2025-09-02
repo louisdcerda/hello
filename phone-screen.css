@@ -122,3 +122,29 @@
   /* spacer for later sections */
   .spacer{padding:80px 0}
   
+
+/* Scroll scene: tall so there’s room to “play” the animation */
+.scene { height: 220vh; } /* increase/decrease to change duration */
+
+/* Keep the phone stack fixed in view while scrolling through the scene */
+.sticky{
+  position: sticky;
+  top: var(--nav-h);                          /* sit below your fixed header */
+  height: calc(100svh - var(--nav-h));
+  display: grid; place-items: center;
+  z-index: 1;
+}
+
+/* Stack the two frames directly on top of each other */
+.stack{ position: relative; width: clamp(220px, 28vw, 320px); }
+.stack .phone{
+  position: absolute; inset: 0; width: 100%; height: auto; display: block;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 1px rgba(255,255,255,.08) inset;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.5));
+  will-change: transform, opacity, border-radius;
+}
+
+/* start with only the home frame visible */
+.frame0 { opacity: 1; }
+.frame1 { opacity: 0; }
