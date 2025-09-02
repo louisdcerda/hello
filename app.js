@@ -54,4 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // trigger fade-in
     requestAnimationFrame(() => note.classList.add('show'));
   }, 7000);
+
+
+  // if saige clickes or presses enter on intro page taken to next (phone-screen)
+  function goNext() {
+    window.location.href = 'phone-screen.html';
+  }
+  document.addEventListener("pointerup", goNext, { once: true });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') goNext();
+  });
 });
