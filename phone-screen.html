@@ -5,28 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Saige / Louis website</title>
   <meta name="color-scheme" content="dark light" />
+
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="./phone-screen.css" />
+  <!-- optional: preload next frames so the fade is smooth -->
+  <link rel="preload" as="image" href="./assets/photos-opening1.png">
+  <link rel="preload" as="image" href="./assets/photos-opening2.png">
+  <link rel="preload" as="image" href="./assets/photos-opening3.png">
 </head>
 <body>
-  <!-- soft animated background -->
   <div class="bg-gradient" aria-hidden="true"></div>
 
   <header class="nav" role="banner">
-    <script>document.documentElement.classList.add('js');</script>
     <div class="container nav-bar">
       <nav class="nav-left" aria-label="Primary">
         <a class="nav-link" href="./">Hello</a>
       </nav>
-  
+
       <a class="logo" href="phone-screen.html">Memories</a>
-  
+
       <nav class="nav-right" aria-label="Secondary">
         <a class="nav-link" href="#features">Note</a>
         <a class="nav-link" href="#updates">Call?</a>
       </nav>
     </div>
   </header>
-  
 
   <main>
     <!-- HERO -->
@@ -36,30 +39,33 @@
           <h1>Hello Saige</h1>
           <p class="muted">I wanted to make you one last project.</p>
           <div class="cta">
-            <a class="btn" href="#updates">Scroll Down</a>
+            <a class="btn" href="#open-photos">Scroll Down</a>
           </div>
         </div>
-    
+
         <figure class="phone-wrap reveal" aria-label="App preview">
           <img class="phone" src="./assets/home-screen.png" alt="App preview" />
         </figure>
-
       </div>
     </section>
 
-    <!-- fasde into photo opening part -->
+    <!-- Scroll-driven “open app” scene (single sticky block) -->
     <section id="open-photos" class="scene">
       <div class="sticky">
         <div class="stack">
-          <img class="phone frame0" src="./assets/home-screen.png" alt="Home screen">
-          <img class="phone frame1" src="./assets/photos-opening.png" alt="Photos opening">
+          <img class="phone frame" src="./assets/home-screen.png"      alt="Home">
+          <img class="phone frame" src="./assets/photos-opening1.png"  alt="Opening 1">
+          <img class="phone frame" src="./assets/photo-opening2.png"  alt="Opening 2">
+          <img class="phone frame" src="./assets/photo-opening3.png"  alt="Opening 3">
         </div>
       </div>
     </section>
 
-
+    <section id="features" class="spacer container">
+      <p class="muted">Feature blocks go here…</p>
+    </section>
   </main>
 
-  <script src="./phone-screen.js"></script>
+  <script src="./phone-screen.js" defer></script>
 </body>
 </html>
