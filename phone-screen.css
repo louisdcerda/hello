@@ -153,3 +153,62 @@
 /* default state: only the first frame visible before JS runs */
 .frame { opacity: 0; transform: none; }
 .frame:first-child { opacity: 1; }
+
+/* Bigger phone in the sticky scene */
+.stack { width: clamp(320px, 42vw, 520px); }
+
+
+/* 1) Make the hero shorter and reduce bottom padding */
+.hero{
+  min-height: max(48svh, 500px);              /* was full screen */
+  padding: calc(var(--nav-h) + 12px) 0 16px;  /* smaller bottom space */
+}
+
+/* 2) Center the hero copy (since phone lives in the scene) */
+.hero-grid{
+  display: grid;
+  place-items: center;
+  gap: 20px;
+  grid-template-columns: 1fr;                 /* single column */
+  text-align: center;
+}
+
+/* 3) Pull the scene upward so the phone appears closer to the button */
+.scene{
+  margin-top: -50vh;                          /* tune: -8vh … -16vh */
+  position: relative;
+}
+
+/* 4) Ensure sticky stack paints above the hero when overlapping */
+.sticky{ z-index: 2; }
+
+/* 5) Smooth anchor scroll + offset so the phone isn’t hidden under the fixed nav */
+html{ scroll-behavior: smooth; }
+#open-photos{ scroll-margin-top: calc(var(--nav-h) + 8px); }
+
+
+/* iPhone screenshot aspect ratio (adjust if your frames differ) */
+:root{
+  --phone-w: 1170;
+  --phone-h: 2532;
+  --phone-r: calc(var(--phone-w) / var(--phone-h)); /* width / height */
+}
+
+/* Give the sticky a tiny buffer so the phone never kisses edges */
+.sticky{
+  top: calc(var(--nav-h) + 8px);
+  height: calc(100svh - var(--nav-h) - 16px);
+}
+
+/* Keep the whole phone on screen:
+   width is capped by viewport width AND by available height × aspect ratio */
+.stack{
+  width: min(92vw, calc((100dvh - var(--nav-h) - 32px) * var(--phone-r)));
+}
+
+/* Optional: a bit larger on big desktops, still height-safe */
+@media (min-width: 1200px){
+  .stack{
+    width: min(560px, calc((100dvh - var(--nav-h) - 32px) * var(--phone-r)));
+  }
+}

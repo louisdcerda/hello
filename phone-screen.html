@@ -6,13 +6,18 @@
   <title>Saige / Louis website</title>
   <meta name="color-scheme" content="dark light" />
 
-  <!-- Put the JS-flag BEFORE CSS so .js rules can apply immediately -->
+  <!-- JS-flag BEFORE CSS so .js rules apply immediately -->
   <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="./phone-screen.css" />
-  <!-- Preload the later frames for a smooth crossfade -->
+
+  <!-- Preload later frames for smoother transitions -->
   <link rel="preload" as="image" href="./assets/photos-opening1.png">
   <link rel="preload" as="image" href="./assets/photos-opening2.png">
   <link rel="preload" as="image" href="./assets/photos-opening3.png">
+  <link rel="preload" as="image" href="./assets/photos-opening4.png">
+  <link rel="preload" as="image" href="./assets/photos-opening5.png">
+  <link rel="preload" as="image" href="./assets/photos-opening6.png">
+  <link rel="preload" as="image" href="./assets/photos-opening7.png">
 </head>
 <body>
   <div class="bg-gradient" aria-hidden="true"></div>
@@ -32,7 +37,7 @@
   </header>
 
   <main>
-    <!-- HERO (text only; phone is handled by the sticky scene below) -->
+    <!-- HERO (text only) -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-text reveal">
@@ -40,34 +45,24 @@
           <p class="muted">I wanted to make you one last project.</p>
           <div class="cta">
             <a class="btn" href="#open-photos">Scroll Down</a>
-          </div>
-        </div>
-      </div>
-    </section>
+          </div>    <!-- Sticky scene with ALL frames stacked (one phone only) -->
 
-    <!-- Single sticky scene with ALL frames stacked (one phone only) -->
+        </div>
+      </div>    
+    </section>
     <section id="open-photos" class="scene">
       <div class="sticky">
         <div class="stack">
           <img class="phone frame" src="./assets/home-screen.png"       alt="Home">
           <img class="phone frame" src="./assets/photos-opening1.png"   alt="Opening 1">
-          <img class="phone frame" src="./assets/photos-opening2.png"   alt="Opening 2">
           <img class="phone frame" src="./assets/photos-opening3.png"   alt="Opening 3">
           <img class="phone frame" src="./assets/photos-opening4.png"   alt="Opening 4">
           <img class="phone frame" src="./assets/photos-opening5.png"   alt="Opening 5">
           <img class="phone frame" src="./assets/photos-opening6.png"   alt="Opening 6">
           <img class="phone frame" src="./assets/photos-opening7.png"   alt="Opening 7">
-
-
         </div>
       </div>
     </section>
-
-    <section id="features" class="spacer container">
-      <p class="muted">Feature blocks go here…</p>
-    </section>
-  </main>
-
   <script src="./phone-screen.js" defer></script>
 </body>
 </html>
