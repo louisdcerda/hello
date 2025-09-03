@@ -6,9 +6,10 @@
   <title>Saige / Louis website</title>
   <meta name="color-scheme" content="dark light" />
 
+  <!-- Put the JS-flag BEFORE CSS so .js rules can apply immediately -->
   <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="./phone-screen.css" />
-  <!-- optional: preload next frames so the fade is smooth -->
+  <!-- Preload the later frames for a smooth crossfade -->
   <link rel="preload" as="image" href="./assets/photos-opening1.png">
   <link rel="preload" as="image" href="./assets/photos-opening2.png">
   <link rel="preload" as="image" href="./assets/photos-opening3.png">
@@ -31,7 +32,7 @@
   </header>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO (text only; phone is handled by the sticky scene below) -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-text reveal">
@@ -41,21 +42,23 @@
             <a class="btn" href="#open-photos">Scroll Down</a>
           </div>
         </div>
-
-        <figure class="phone-wrap reveal" aria-label="App preview">
-          <img class="phone" src="./assets/home-screen.png" alt="App preview" />
-        </figure>
       </div>
     </section>
 
-    <!-- Scroll-driven “open app” scene (single sticky block) -->
+    <!-- Single sticky scene with ALL frames stacked (one phone only) -->
     <section id="open-photos" class="scene">
       <div class="sticky">
         <div class="stack">
-          <img class="phone frame" src="./assets/home-screen.png"      alt="Home">
-          <img class="phone frame" src="./assets/photos-opening1.png"  alt="Opening 1">
-          <img class="phone frame" src="./assets/photos-opening2.png"  alt="Opening 2">
-          <img class="phone frame" src="./assets/photos-opening3.png"  alt="Opening 3">
+          <img class="phone frame" src="./assets/home-screen.png"       alt="Home">
+          <img class="phone frame" src="./assets/photos-opening1.png"   alt="Opening 1">
+          <img class="phone frame" src="./assets/photos-opening2.png"   alt="Opening 2">
+          <img class="phone frame" src="./assets/photos-opening3.png"   alt="Opening 3">
+          <img class="phone frame" src="./assets/photos-opening4.png"   alt="Opening 4">
+          <img class="phone frame" src="./assets/photos-opening5.png"   alt="Opening 5">
+          <img class="phone frame" src="./assets/photos-opening6.png"   alt="Opening 6">
+          <img class="phone frame" src="./assets/photos-opening7.png"   alt="Opening 7">
+
+
         </div>
       </div>
     </section>
