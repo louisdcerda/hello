@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Note • Saige / Louis</title>
+  <meta name="color-scheme" content="dark light" />
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="./phone-screen.css" />
+</head>
+<body class="note-page">
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <header class="nav" role="banner">
+    <div class="container nav-bar">
+      <nav class="nav-left" aria-label="Primary">
+        <a class="nav-link" href="phone-screen.html">Memories</a>
+      </nav>
+      <a class="logo active" href="note.html">Memories</a> 
+
+      <!-- <a class="logo" href="phone-screen.html">Memories</a> -->
+
+      <nav class="nav-right" aria-label="Secondary">
+        <a class="nav-link" href="phone-screen.html#open-photos">Back to Photos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="note-hero">
+      <div class="container">
+        <h1 class="reveal">A Note for Saige</h1>
+        <p class="muted reveal">From Louis</p>
+      </div>
+    </section>
+
+    <section class="note-section">
+      <div class="container">
+        <article class="note-card reveal">
+          <p><strong>I talked about making you cool websites so this is the last one I’ll make.</strong> I wanted to make like a top 100 photos of you/us. Sorry it’s a little janky lmfaoo. I hope it works and you like it. If u dont tell me too.</p>
+        
+          <hr style="border:none;height:1px;background:rgba(255,255,255,.12);margin:12px 0 16px;border-radius:1px;">
+        
+          <p>Thank you for everything though saige. You were awesome, beautiful, funny, silly, competent, smart, genuine, caring, thoughtful, and athletic. You were yourself and I loved it. You’re on my mind all the time I am doing a lot of stuff now because ik you would be proud or its stuff you and I would do. I go out and sit at the bridge a lot like we did that one day because I miss you and I miss the things we would do. I still care about you a lot and I dont want you stressing. I hope you find a job you love and eat healthy every day remember 3 meals a day ideally.  i need my best friend back</p>
+        </article>
+        
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // simple reveal-on-load
+    document.querySelectorAll('.reveal').forEach(el => {
+      requestAnimationFrame(() => el.classList.add('in'));
+    });
+  </script>
+</body>
+</html>
+

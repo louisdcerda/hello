@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // trigger fade-in
     requestAnimationFrame(() => note.classList.add('show'));
-  }, 7000);
+  }, 8000);
 
 
   // if saige clickes or presses enter on intro page taken to next (phone-screen)
