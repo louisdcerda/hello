@@ -274,3 +274,25 @@ body{
 .nav .nav-link.active,
 .logo.active{ color:#fff; font-weight:600; }
 
+/* Sticky viewport should not block clicks on the hero button */
+.sticky{
+  position: sticky;
+  top: calc(var(--nav-h) + 8px);
+  height: calc(100dvh - var(--nav-h) - 16px);
+  display: grid; place-items: center;
+  z-index: 2;
+  pointer-events: none;         /* <<< key line */
+}
+
+.stack, .stack .phone{
+  pointer-events: none;         /* images won't capture clicks either */
+}
+.hero{ position:relative; z-index: 3; }   /* button sits above everything */
+
+.scene{
+  position: relative;
+  z-index: 1;
+  height: 400vh;
+  margin-top: 24px;                         /* positive gap under button */
+  scroll-margin-top: calc(var(--nav-h) + 8px);
+}

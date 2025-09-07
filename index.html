@@ -6,14 +6,73 @@
   <title>iPhone-style Hello Intro</title>
   <meta name="color-scheme" content="dark light" />
   <link rel="stylesheet" href="style.css">
+
+  <!-- Minimal inline CSS to ensure the overlay link works even if external CSS changes -->
+  <style>
+    /* Full-viewport clickable layer that routes to phone-screen.html */
+    .enter-cover {
+      position: fixed; inset: 0; z-index: 9999;
+      display: block;
+      /* don't hide cursor-focus for accessibility */
+      outline: none; text-decoration: none;
+      /* allow clicks to pass to link (but not block hover styles below) */
+      background: transparent;
+    }
+    /* Optional: small hint at the bottom */
+    .enter-hint {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(0,0,0,.35);
+      color: #fff; font: 500 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      z-index: 10000; pointer-events: none; user-select: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .enter-hint { display:none; }
+    }
+  </style>
 </head>
 <body>
   <div class="bg-gradient" aria-hidden="true"></div>
-  <main class="stage" role="application" aria-label="Hello screen">
+
+  <main class="stage" role="application" aria-label="Hello screen" tabindex="-1">
     <div id="hello" class="hello" aria-live="polite">Hi</div>
     <div id="name" class="name" aria-live="polite">Saige</div>
   </main>
+
+  <!-- 1) Click/Tap anywhere to enter -->
+  <a class="enter-cover" href="phone-screen.html" aria-label="Enter — open memories"></a>
+  <div class="enter-hint">Tap or press Enter to continue</div>
+
+  <!-- 2) Keyboard support (and JS fallback navigation) -->
+  <script>
+    // If the overlay link were ever removed by CSS, still navigate on key press/click.
+    const go = () => location.href = 'phone-screen.html';
+    // Enter / Space
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    }, {passive:false});
+    // Click anywhere (in case overlay is blocked by other layers)
+    window.addEventListener('click', (e) => {
+      // Let normal links work, otherwise go
+      const a = e.target.closest('a[href]');
+      if (!a) go();
+    });
+
+    // Remove hint after first interaction
+    const hint = document.querySelector('.enter-hint');
+    const hideHint = () => hint && (hint.style.display = 'none');
+    ['pointerdown','keydown'].forEach(evt => window.addEventListener(evt, hideHint, {once:true}));
+  </script>
+
+  <!-- Your existing scripts (they’ll still run the Hello animation) -->
   <script src="./greetings.data.js" defer></script>
   <script src="./app.js" defer></script>
+
+  <!-- No-JS fallback -->
+  <noscript>
+    <p style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);color:#fff;font-family:system-ui"> 
+      JavaScript is off. <a href="phone-screen.html" style="color:#9cf">Open Memories</a>.
+    </p>
+  </noscript>
 </body>
 </html>
