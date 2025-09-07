@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // hard coded names
   const names = [
-    "Saigeypoo", "Soyeon" , "소연", "Saige"
+    "Saigeypoo", "Soyeon" , "소연", "Penguin Luvr 123","Saige"
   ];
 
   let gi = 0, ni = 0;
@@ -53,5 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // trigger fade-in
     requestAnimationFrame(() => note.classList.add('show'));
-  }, 7000);
+  }, 8000);
+
+
+  // if saige clickes or presses enter on intro page taken to next (phone-screen)
+  function goNext() {
+    window.location.href = 'phone-screen.html';
+  }
+  document.addEventListener("pointerup", goNext, { once: true });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') goNext();
+  });
 });

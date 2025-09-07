@@ -1,0 +1,276 @@
+:root{
+  --bg:#000; --fg:#fff; --muted:#9aa0a6;
+  --maxw:1120px;
+  --nav-h:64px;
+
+  /* iPhone screenshot aspect ratio (adjust if yours differs) */
+  --phone-w:1170;
+  --phone-h:2532;
+  --phone-r:calc(var(--phone-w) / var(--phone-h)); /* width / height */
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body{height:100%}
+html{ scroll-behavior:smooth; }              /* smooth anchor scroll */
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:system-ui,-apple-system,Inter,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+  overflow-x:hidden;
+}
+
+/* animated background */
+.bg-gradient{
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(120vmax 120vmax at 12% 18%, #1b1b1b, transparent),
+    radial-gradient(120vmax 120vmax at 85% 80%, #121212, transparent),
+    radial-gradient(120vmax 120vmax at 25% 80%, #0f0f0f, transparent),
+    #000;
+  filter:saturate(1.15) brightness(1);
+  animation:drift 30s linear infinite; opacity:.9;
+}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(1%,-1%,0) scale(1.02)}
+  100%{transform:translate3d(0,0,0) scale(1)}
+}
+
+/* layout helpers */
+.container{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+
+/* nav */
+.nav{
+  position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:10;
+  display:flex; align-items:center; backdrop-filter:saturate(1.2) blur(6px);
+  -webkit-backdrop-filter:saturate(1.2) blur(6px);
+  background:rgba(0,0,0,.12);
+}
+.nav .container.nav-bar{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  column-gap:clamp(12px,2vw,32px);
+}
+.nav-left,.nav-right{ display:flex; gap:clamp(12px,2vw,24px); }
+.nav-left{ justify-self:start; }
+.nav-right{ justify-self:end; }
+.logo{ justify-self:center; font-weight:600; text-decoration:none; color:var(--fg); padding:0 .25rem; }
+.nav-link{ color:var(--muted); text-decoration:none; }
+
+@media (max-width:560px){
+  .nav-left{ display:none; }
+  .nav .container.nav-bar{ grid-template-columns:1fr auto; }
+}
+
+/* hero (text only now) — keep it compact */
+.hero{
+  position:relative; z-index:1;
+  min-height:max(48svh,500px);
+  padding:calc(var(--nav-h) + 12px) 0 16px;
+}
+.hero-grid{ display:grid; place-items:center; gap:20px; grid-template-columns:1fr; text-align:center; }
+.hero-text h1{ font-size:clamp(32px,6vw,64px); line-height:1.05; margin:0 0 12px; }
+.muted{ color:var(--muted); }
+.cta .btn{
+  display:inline-block; margin-top:12px; padding:10px 16px;
+  border-radius:12px; background:#1a1a1a; color:#fff; text-decoration:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+
+/* Scroll scene —— a bit of overlap so the phone appears right under the button */
+.scene{
+  height:400vh;                /* total animation length; JS can override */
+  margin-top:-12vh;            /* pull upward to reduce gap; tweak -8…-16 */
+  position:relative;
+  scroll-margin-top:calc(var(--nav-h) + 8px);  /* anchor offset */
+}
+
+/* Sticky viewport keeps the phone fixed while scrolling the scene */
+.sticky{
+  position:sticky;
+  top:calc(var(--nav-h) + 8px);
+  height:calc(100dvh - var(--nav-h) - 16px);   /* dynamic vh for iOS */
+  display:grid; place-items:center;
+  z-index:2;                                    /* above hero while overlapping */
+}
+
+/* Stack frames directly on top of each other */
+.stack{
+  position:relative;
+  /* Fit by height first; never exceed viewport width */
+  width:min(92vw, calc((100dvh - var(--nav-h) - 32px) * var(--phone-r)));
+}
+.stack .phone{
+  position:absolute; inset:0;
+  width:100%; height:auto; display:block;
+  border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 1px rgba(255,255,255,.08) inset;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));
+  will-change:transform,opacity,border-radius;
+}
+
+/* Pre-JS fallback: first frame visible */
+.frame{ opacity:0; transform:none; }
+.frame:first-child{ opacity:1; }
+
+/* reveal (safe if JS fails) */
+.reveal{ opacity:1; transform:none; }
+.js .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+.js .reveal.in{ opacity:1; transform:none; }
+
+/* spacing for later sections */
+.spacer{ padding:80px 0; }
+
+/* Scroll scene — remove the big negative overlap */
+.scene{
+  height:400vh;                 /* total animation length; JS can override */
+  margin-top:16px;              /* small, positive gap under the button */
+  position:relative;
+  scroll-margin-top:calc(var(--nav-h) + 8px);
+}
+
+/* Sticky viewport keeps the phone fixed while scrolling the scene */
+.sticky{
+  position:sticky;
+  top:calc(var(--nav-h) + 8px);
+  height:calc(100dvh - var(--nav-h) - 16px);
+  display:grid; place-items:center;
+  z-index:2;
+  overflow:visible;             /* make sure nothing gets clipped */
+}
+
+/* Phone stack — give it real dimensions */
+.stack{
+  position:relative;
+
+  /* Target the sticky height: phone’s HEIGHT = sticky height,
+     WIDTH is derived from aspect ratio so it fits perfectly. */
+  height:calc(100dvh - var(--nav-h) - 32px);
+  aspect-ratio: calc(var(--phone-w) / var(--phone-h));
+
+  /* Don’t ever exceed viewport width */
+  max-width:92vw;
+  width:min(92vw, calc((100dvh - var(--nav-h) - 32px) * var(--phone-r)));
+  /* Centered by the grid parent */
+}
+
+/* Each frame fills the stack box exactly */
+.stack .phone{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  display:block;
+  object-fit:cover;              /* avoids tiny rounding gaps */
+  border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 1px rgba(255,255,255,.08) inset;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));
+  will-change:transform,opacity,border-radius;
+}
+
+/* Pre-JS fallback: first frame visible */
+.frame{ opacity:0; transform:none; }
+.frame:first-child{ opacity:1; }
+
+
+/* Note page */
+.note-hero{
+  position:relative; z-index:1;
+  padding:calc(var(--nav-h) + 24px) 0 8px;
+  text-align:left;
+}
+.note-hero h1{ margin:0 0 4px; font-size:clamp(28px,5vw,44px); }
+.note-section{ padding:16px 0 64px; }
+
+.note-card{
+  max-width:820px;
+  margin:12px auto 0;
+  padding:24px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.03);
+  box-shadow:0 12px 32px rgba(0,0,0,.35), inset 0 0 1px rgba(255,255,255,.06);
+  line-height:1.6;
+  color:var(--fg);
+}
+
+.note-card p{ margin:0 0 1rem; }
+.note-card p:last-child{ margin-bottom:0; }
+
+/* ===== Note page polish ===== */
+.note-hero{
+  position:relative; z-index:1;
+  padding:calc(var(--nav-h) + 32px) 0 4px;
+  text-align:left;
+}
+
+.note-hero h1{
+  margin:0 0 6px;
+  font-size:clamp(34px, 5.5vw, 56px);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+}
+
+.note-hero .muted{
+  font-size:clamp(14px, 1.5vw, 16px);
+  opacity:.9;
+}
+
+.note-section{ padding:20px 0 96px; }
+
+.note-card{
+  /* layout */
+  max-width:760px;           /* comfortable line length */
+  margin:18px auto 0;
+  padding:clamp(18px, 3vw, 28px);
+
+  /* glass panel */
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.08),
+    rgba(255,255,255,.05)
+  );
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.45),
+    inset 0 0 0.5px rgba(255,255,255,.25);
+  backdrop-filter:saturate(1.2) blur(8px);
+  -webkit-backdrop-filter:saturate(1.2) blur(8px);
+
+  /* typography */
+  color:#e9eaee;
+  line-height:1.75;
+  font-size:clamp(16px, 1.65vw, 18px);
+  letter-spacing:.15px;
+}
+
+.note-card p{ margin:0 0 1.1rem; }
+.note-card p + p{ margin-top:1.1rem; }
+
+/* optional emphasis for the first sentence */
+.note-card p:first-child{
+  font-size:clamp(17px, 1.8vw, 19px);
+  opacity:.98;
+}
+
+/* subtle vignette to focus the card */
+.note-page .bg-gradient{
+  opacity:.95;
+  background:
+    radial-gradient(120vmax 120vmax at 50% 0%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(120vmax 120vmax at 50% 100%, rgba(255,255,255,.05), transparent 60%),
+    #000;
+  animation:drift 30s linear infinite;
+}
+
+/* tighten container on very wide screens */
+@media (min-width:1400px){
+  .container{ max-width:1000px; }
+}
+
+/* mobile breathing room */
+@media (max-width:560px){
+  .note-section{ padding-bottom:72px; }
+  .note-card{ border-radius:16px; }
+}
+/* put this in your CSS */
+.nav .nav-link.active,
+.logo.active{ color:#fff; font-weight:600; }
+
